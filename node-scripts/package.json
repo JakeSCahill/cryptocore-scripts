@@ -1,0 +1,31 @@
+{
+  "name": "cryptocore-scripts",
+  "version": "1.0.0",
+  "description": "Node.js scripts to use with the CryptoCore API",
+  "main": "send_tx.js",
+  "dependencies": {
+    "@iota/core": "^1.0.0-beta.29",
+    "@iota/transaction-converter": "^1.0.0-beta.23",
+    "prompt": "^1.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JakeSCahill/cryptocore-scripts.git"
+  },
+  "keywords": [
+    "cryptocore",
+    "iota",
+    "pow",
+    "hardware"
+  ],
+  "author": "Jake Cahill",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JakeSCahill/cryptocore-scripts/issues"
+  },
+  "homepage": "https://github.com/JakeSCahill/cryptocore-scripts#readme"
+}
