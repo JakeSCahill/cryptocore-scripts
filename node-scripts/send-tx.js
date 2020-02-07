@@ -21,7 +21,7 @@ var prompt_attributes = [
         // The second input text is assigned to password variable.
         name: 'trytes',
 	// Allow a single string of trytes
-        validator: /^[A-Z9]+[^,]$/,
+        validator: /^["'A-Z9]+[^,]$/,
         // If given data is not valid then prompt below message.
         warning: 'Please enter a single string of transaction trytes.'
     }
