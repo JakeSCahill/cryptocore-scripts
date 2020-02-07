@@ -15,14 +15,10 @@ fi
 
 trytes=$(node /home/pi/scripts/repo/node-scripts/create-bundle.js MWM)
 
-echo "Node returned: $trytes"
-
 trunkAndBranch=$(node /home/pi/scripts/repo/node-scripts/get_branch_and_trunk.js MWM)
 
 trunk=$(echo "$trunkAndBranch" | jq '.trunkTransaction')
 branch=$(echo "$trunkAndBranch" | jq '.branchTransaction')
-
-echo "$trunk"
 
 timestamp=$(date +%s%3N)
 
@@ -31,4 +27,8 @@ template='{"command":"attachToTangle","trunkTransaction": %s,"branchTransaction"
 json_string=$(printf "$template" $trunk $branch $MWM  $timestamp $trytes)
 
 echo "$json_string" | sudo picocom --baud 115200 --echo --imap crcrlf --exit-after 7000 /dev/ttyS0  > attachedTrytes.txt
+
+echo "Finished doing proof of work"
+
+echo "See attachedTrytes.txt for the transaction trytes"
 
