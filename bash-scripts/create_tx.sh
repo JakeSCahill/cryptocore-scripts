@@ -50,6 +50,6 @@ json_string=$(printf "$template" "$trunk" "$branch" $MWM "$address" $timestamp)
 
 echo "$json_string" | sudo picocom --baud 115200 --echo --imap crcrlf --exit-after 7000 /dev/ttyS0 > $saved_transaction_directory/zero_value_transaction.txt
 
-attachedTrytes=$(node /home/pi/cryptocore-scripts/node-scripts/send-tx.js $MWM)
+attached_trytes=$(node /home/pi/cryptocore-scripts/node-scripts/send-tx.js $MWM)
 
-echo "$attachedTrytes"
+echo "$attached_trytes"
