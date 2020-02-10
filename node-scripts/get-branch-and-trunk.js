@@ -13,7 +13,7 @@ const nodes = {
 }
 
 // Connect to the correct IOTA network, depending on the user's
-// selection in the CryptoCore script
+// selection in the main script
 if (network === 14) {
         iota = Iota.composeAPI({
         provider: nodes.mainnet
