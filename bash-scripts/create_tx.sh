@@ -35,7 +35,8 @@ while [[ ! $branch =~ ^[A-Z9]*{81}$ ]]; do
         read -p "Please enter a branch transaction hash: " branch
 done
 
-timestamp=$(date +%s)
+# Get the current Unix epoch in milliseconds for the `attachmentTimestamp` field
+timestamp=$(date +%s%3N)
 
 saved_transaction_directory="/home/pi/cryptocore-scripts/attached-transaction-trytes"
 

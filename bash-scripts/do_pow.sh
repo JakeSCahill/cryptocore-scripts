@@ -24,6 +24,7 @@ trunkAndBranch=$(node /home/pi/cryptocore-scripts/node-scripts/get-branch-and-tr
 trunk=$(echo "$trunkAndBranch" | jq '.trunkTransaction')
 branch=$(echo "$trunkAndBranch" | jq '.branchTransaction')
 
+# Get the current Unix epoch in milliseconds for the `attachmentTimestamp` field
 timestamp=$(date +%s%3N)
 
 saved_transaction_directory="/home/pi/cryptocore-scripts/attached-transaction-trytes"
