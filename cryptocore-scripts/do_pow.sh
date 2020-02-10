@@ -15,11 +15,11 @@ fi
 
 echo "Creating bundle"
 
-trytes=$(node /home/pi/scripts/repo/node-scripts/create-bundle.js $MWM)
+trytes=$(node /home/pi/cryptocore-scripts/node-scripts/create-bundle.js $MWM)
 
 echo "Doing proof of work"
 
-trunkAndBranch=$(node /home/pi/scripts/repo/node-scripts/get-branch-and-trunk.js $MWM)
+trunkAndBranch=$(node /home/pi/cryptocore-scripts/node-scripts/get-branch-and-trunk.js $MWM)
 
 trunk=$(echo "$trunkAndBranch" | jq '.trunkTransaction')
 branch=$(echo "$trunkAndBranch" | jq '.branchTransaction')
@@ -38,6 +38,6 @@ json_string=$(printf "$template" $trunk $branch $MWM  $timestamp $trytes)
 
 echo "$json_string" | sudo picocom --baud 115200 --echo --imap crcrlf --exit-after 6000 /dev/ttyS0  > $saved_transaction_directory/attached_trytes.txt
 
-attachedTrytes=$(node /home/pi/scripts/repo/node-scripts/send-bundle.js $MWM)
+attachedTrytes=$(node /home/pi/cryptocore-scripts/node-scripts/send-bundle.js $MWM)
 
 echo "$attachedTrytes"
