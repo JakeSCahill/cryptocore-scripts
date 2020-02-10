@@ -44,11 +44,15 @@ if [ ! -d $saved_transaction_directory ]; then
     mkdir $saved_transaction_directory
 fi
 
+echo "Creating transaction and doing proof of work"
+
 template='{"command":"jsonDataTX","trunkTransaction":"%s","branchTransaction":"%s","minWeightMagnitude":%s,"tag":"CRYPTOCORE99999999999999999", "address":"%s","timestamp":%s,"data":{"message":"HELLO WORLD FROM CRYPTOCORE"}}'
 
 json_string=$(printf "$template" "$trunk" "$branch" $MWM "$address" $timestamp)
 
-echo "$json_string" | sudo picocom --baud 115200 --echo --imap crcrlf --exit-after 7000 /dev/ttyS0 > $saved_transaction_directory/zero_value_transaction.txt
+echo "$json_string" | sudo picocom --baud 115200 --echo --imap crcrlf --exit-after 3000 /dev/ttyS0 > $saved_transaction_directory/zero_value_transaction.txt
+
+echo "Attaching the transaction to the Tangle"
 
 attached_trytes=$(node /home/pi/cryptocore-scripts/node-scripts/send-tx.js $MWM)
 
