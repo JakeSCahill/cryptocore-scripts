@@ -1,77 +1,46 @@
 const Iota = require('@iota/core');
 const Transaction = require('@iota/transaction-converter');
 const fs = require('fs');
-const prompt = require('prompt');
 
+// Get the first argument that was passed to this script
+// This should be a minimum weight magnitude (14 or 9)
+const network = process.argv[2];
+
+// Define a node for each IOTA network
 const nodes = {
-    devnet: 'https://nodes.devnet.iota.org:443',
-    mainnet: `https://nodes.iota.org:443`
+        devnet: 'https://nodes.devnet.iota.org:443',
+        mainnet: `https://nodes.iota.org:443`
 }
 
-// This json object is used to configure what data will be retrieved from command line.
-var prompt_attributes = [
-    {
-        name: 'network',
-        // The network can begin with a D for Devnet or an M for Mainnet
-        validator: /^[dDmM]$/,
-        // If given data is not valid then prompt below message.
-        warning: 'Please enter D for the Devnet or M for the Mainnet'
-    },
-    {
-        // The second input text is assigned to password variable.
-        name: 'trytes',
-	// Allow a single string of trytes
-        validator: /^["'A-Z9]+[^,]$/,
-        // If given data is not valid then prompt below message.
-        warning: 'Please enter a single string of transaction trytes.'
-    }
-];
+// Connect to the correct IOTA network, depending on the user's
+// selection in the CryptoCore script
+if (network === '14') {
+        iota = Iota.composeAPI({
+        provider: nodes.mainnet
+        });
+} else {
+        iota = Iota.composeAPI({
+        provider: nodes.devnet
+        });
+}
 
-// Start the prompt to read user input.
-prompt.start();
+// Path to the file where the CryptoCore script saved the transaction trytes
+const savedTransactionTrytes = "/home/pi/cryptocore-scripts/attached-transaction-trytes";
 
-// Prompt and get user input then display those data in console.
-prompt.get(prompt_attributes, function (err, result) {
-    if (err) {
-        console.log(err);
-        return 1;
-    } else {
-        console.log('Command-line received data:');
+// Check the file for transaction trytes
+const data = fs.readFileSync(`${savedTransactionTrytes}/zero_value_transaction.txt`);
+const match = data.toString().match(/(?<=({"trytes":))\["[^\]]+\]/g);
+const trytes = JSON.parse(match[0]);
 
-        // Get user input from result object.
-        var network = result.network;
-        var trytes = result.trytes;
+if (!trytes) {
+        console.log("No trytes found. Make sure that proof of work was done and check the following file :");
+        console.log(`${savedTransactionTrytes}/zero_value_transaction.txt`);
+}
 
-        if (network === 'd' || network === 'D'){
-		iota = Iota.composeAPI({
-	        // Replace with the URL of the IRI node you want to send the transactio$
-        	 provider: nodes.devnet
-     		});
-	} else {
-		iota = Iota.composeAPI({
-                // Replace with the URL of the IRI node you want to send the tr$
-                 provider: nodes.mainnet
-                });
-	}
-	const trytesArray = new Array(1);
-
-	trytes[0] =  trytes;
-
-	const now = Date.now();
-
-	fs.writeFileSync(`trytes-${now}.txt`, JSON.stringify(trytes), (error) => {
-    	if (!error) {
-       		console.log(`Trytes saved to file trytes-${now}.txt`);
-    	} else {
-		console.log(`Error writing file: ${error}`);
-	}});
-
-	iota.storeAndBroadcast(trytesArray)
-	.then(result => {
-    		console.log(Transaction.asTransactionObject(result));
-	})
-	.catch(error => {
-    		console.log(error)
-	});
-    }
+iota.storeAndBroadcast(trytes)
+.then(result => {
+        console.log(Transaction.asTransactionObject(result));
+})
+.catch(error => {
+        console.log(error)
 });
