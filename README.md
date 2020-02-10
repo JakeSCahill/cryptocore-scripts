@@ -14,7 +14,7 @@ To do proof of work for eight transactions and send them to a node, do the follo
   git clone https://github.com/JakeSCahill/cryptocore-scripts
   ```
 
-2. Change into the bash-scripts directory
+2. Change into the `bash-scripts` directory
 
   ```bash
   cd cryptocore-scripts/bash-scripts
