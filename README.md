@@ -1,4 +1,4 @@
-# CryptoCore scripts
+# main scripts
 
 Sample code that we use to document the CryptoCore API on the IOTA documentation portal.
 
