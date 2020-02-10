@@ -36,11 +36,19 @@ while [[ ! $branch =~ ^[A-Z9]*{81}$ ]]; do
 done
 
 timestamp=$(date +%s)
-echo $timestamp
 
+saved_transaction_directory="/home/pi/cryptocore-scripts/attached-transaction-trytes"
+
+if [ ! -d saved_transaction_directory ]; then
+    mkdir saved_transaction_directory
+fi
 
 template='{"command":"jsonDataTX","trunkTransaction":"%s","branchTransaction":"%s","minWeightMagnitude":%s,"tag":"CRYPTOCORE99999999999999999", "address":"%s","timestamp":%s,"data":{"message":"HELLO WORLD FROM CRYPTOCORE"}}'
 
 json_string=$(printf "$template" "$trunk" "$branch" $MWM "$address" $timestamp)
 
-echo "$json_string" | sudo picocom --baud 115200 --echo --imap crcrlf --exit-after 100000 /dev/ttyS0
+echo "$json_string" | sudo picocom --baud 115200 --echo --imap crcrlf --exit-after 100000 /dev/ttyS0 > saved_transaction_directory/zero_value_transaction.txt
+
+attachedTrytes=$(node /home/pi/scripts/repo/node-scripts/send-tx.js $MWM)
+
+echo "$attachedTrytes"

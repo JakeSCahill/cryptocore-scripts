@@ -4,6 +4,8 @@ const Iota = require('@iota/core');
 const Transaction = require('@iota/transaction-converter');
 const fs  = require('fs');
 
+// Get the first argument that was passed to this script
+// This should be a minimum weight magnitude (14 or 9)
 const network = process.argv[2];
 
 console.log(network);
@@ -13,6 +15,8 @@ const nodes = {
         mainnet: `https://nodes.iota.org:443`
 }
 
+// Connect to the correct IOTA network, depending on the user's
+// selection in the CryptoCore script
 if (network === '14') {
         iota = Iota.composeAPI({
         provider: nodes.mainnet
@@ -23,14 +27,25 @@ if (network === '14') {
         });
 }
 
-const data = fs.readFileSync('../cryptocore-scripts/attachedTrytes.txt');
+// Path to the file where the CryptoCore script saved the transaction trytes
+const savedTransactionTrytes = "/home/pi/cryptocore-scripts/attached-transaction-trytes";
+
+
+// Check the file for transaction trytes
+const data = fs.readFileSync(`${savedTransactionTrytes}/attached_trytes.txt`);
 const match = data.toString().match(/(?<=({"trytes":))\["[^\]]+\]/g);
 const trytes = JSON.parse(match[0]);
 
+if (!trytes) {
+        console.log("No trytes found. Make sure that proof of work was done and check the following file :");
+        console.log(`${savedTransactionTrytes}/attached_trytes.txt`);
+}
 
+// Send the transaction trytes to the connected IOTA node
 iota.storeAndBroadcast(trytes)
  .then(trytes => {
-	console.log("Successfully attached transactions to the Tangle");
+        console.log("Successfully attached transactions to the Tangle");
+        // print the transaction details
 	console.log("Tail transaction hash: ");
 	console.log(JSON.stringify(trytes.map(t => Transaction.asTransactionObject(t))[trytes.length-1].hash))
 })

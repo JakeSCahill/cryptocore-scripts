@@ -2,6 +2,8 @@
 
 const Iota = require('@iota/core');
 
+// Get the first argument that was passed to this script
+// This should be a minimum weight magnitude (14 or 9)
 const network = process.argv[2];
 
 // Define a node for each IOTA network
@@ -10,6 +12,8 @@ const nodes = {
         mainnet: `https://nodes.iota.org:443`
 }
 
+// Connect to the correct IOTA network, depending on the user's
+// selection in the CryptoCore script
 if (network === 14) {
         iota = Iota.composeAPI({
         provider: nodes.mainnet
@@ -20,7 +24,7 @@ if (network === 14) {
         });
 }
 
-
+// Ask the connected IOTA node for two tip transaction hashes
 iota.getTransactionsToApprove(3)
  .then(transactionHashes => {
      console.log(JSON.stringify(transactionHashes));

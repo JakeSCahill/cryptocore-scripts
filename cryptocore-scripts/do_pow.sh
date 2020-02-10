@@ -26,13 +26,17 @@ branch=$(echo "$trunkAndBranch" | jq '.branchTransaction')
 
 timestamp=$(date +%s%3N)
 
+saved_transaction_directory="/home/pi/cryptocore-scripts/attached-transaction-trytes"
+
+if [ ! -d saved_transaction_directory ]; then
+    mkdir saved_transaction_directory
+fi
+
 template='{"command":"attachToTangle","trunkTransaction": %s,"branchTransaction":%s,"minWeightMagnitude":%s,"timestamp":%s,"trytes":%s}'
 
 json_string=$(printf "$template" $trunk $branch $MWM  $timestamp $trytes)
 
-echo "$json_string" | sudo picocom --baud 115200 --echo --imap crcrlf --exit-after 6000 /dev/ttyS0  > attachedTrytes.txt
-
-echo "$MWM"
+echo "$json_string" | sudo picocom --baud 115200 --echo --imap crcrlf --exit-after 6000 /dev/ttyS0  > saved_transaction_directory/attached_trytes.txt
 
 attachedTrytes=$(node /home/pi/scripts/repo/node-scripts/send-bundle.js $MWM)
 
