@@ -95,15 +95,9 @@ const seed = "999999999999999999999999999999999999999999999999999999999999999999
 // Path to which to save the bundle's transaction trytes
 const savedTransactionTrytes = "/home/pi/cryptocore-scripts/attached-transaction-trytes/bundleTrytes.txt";
 
-// Chain the transactions into a bundle and save the transaction trytes to a file
+// Chain the transactions into a bundle
 iota.prepareTransfers(seed, transfers)
     .then(function(trytes){
-        fs.writeFileSync(savedTransactionTrytes, JSON.stringify(trytes), (error) => {
-            if(!error) {
-               console.log('Bundle trytes saved to file');
-            } else{
-               console.log(`Error writing file: ${error}`);
-            }});
 	console.log(JSON.stringify(trytes));
     })
     .catch(error => {

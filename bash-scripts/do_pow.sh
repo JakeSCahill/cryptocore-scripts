@@ -17,7 +17,7 @@ echo "Creating bundle"
 
 trytes=$(node /home/pi/cryptocore-scripts/node-scripts/create-bundle.js $MWM)
 
-echo "Doing proof of work"
+echo "Getting tip transactions"
 
 trunk_and_branch=$(node /home/pi/cryptocore-scripts/node-scripts/get-branch-and-trunk.js $MWM)
 
@@ -32,6 +32,8 @@ saved_transaction_directory="/home/pi/cryptocore-scripts/attached-transaction-tr
 if [ ! -d $saved_transaction_directory ]; then
     mkdir $saved_transaction_directory
 fi
+
+echo "Doing proof of work on CryptoCore"
 
 template='{"command":"attachToTangle","trunkTransaction": %s,"branchTransaction":%s,"minWeightMagnitude":%s,"timestamp":%s,"trytes":%s}'
 

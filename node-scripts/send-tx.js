@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const Iota = require('@iota/core');
 const Transaction = require('@iota/transaction-converter');
 const fs = require('fs');
@@ -31,6 +33,8 @@ const savedTransactionTrytes = "/home/pi/cryptocore-scripts/attached-transaction
 const data = fs.readFileSync(`${savedTransactionTrytes}/zero_value_transaction.txt`);
 const match = data.toString().match(/(?<=({"trytes":))\["[^\]]+\]/g);
 const trytes = JSON.parse(match[0]);
+
+console
 
 if (!trytes) {
         console.log("No trytes found. Make sure that proof of work was done and check the following file :");
