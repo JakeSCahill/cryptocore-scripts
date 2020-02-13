@@ -27,14 +27,12 @@ if (network === '14') {
 }
 
 // Path to the file where the main script saved the transaction trytes
-const savedTransactionTrytes = "/home/pi/cryptocore-scripts/attached-transaction-trytes";
+const savedTransactionTrytes = "../attached-transaction-trytes";
 
 // Check the file for transaction trytes
 const data = fs.readFileSync(`${savedTransactionTrytes}/zero_value_transaction.txt`);
 const match = data.toString().match(/(?<=({"trytes":))\["[^\]]+\]/g);
 const trytes = JSON.parse(match[0]);
-
-console
 
 if (!trytes) {
         console.log("No trytes found. Make sure that proof of work was done and check the following file :");
@@ -43,7 +41,7 @@ if (!trytes) {
 
 iota.storeAndBroadcast(trytes)
 .then(result => {
-        console.log(Transaction.asTransactionObject(result));
+        console.log(Transaction.asTransactionObject(result[0]));
 })
 .catch(error => {
         console.log(error)
