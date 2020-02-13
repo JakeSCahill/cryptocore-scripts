@@ -50,7 +50,8 @@ template='{"command":"jsonDataTX","trunkTransaction":"%s","branchTransaction":"%
 
 json_string=$(printf "$template" "$trunk" "$branch" $MWM "$address" $timestamp)
 
-echo "$json_string" | sudo picocom --baud 115200 --echo --imap crcrlf --exit-after 3000 /dev/ttyS0 > $saved_transaction_directory/zero_value_transaction.txt
+node ../node-scripts/serial.js "$json_string" > $saved_transaction_directory/zero_value_transaction.txt
+#echo "$json_string" | sudo picocom --baud 115200 --echo --imap crcrlf --exit-after 3000 /dev/ttyS0 > $saved_transaction_directory/zero_value_transaction.txt
 
 echo "Attaching the transaction to the Tangle"
 

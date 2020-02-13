@@ -39,7 +39,8 @@ template='{"command":"attachToTangle","trunkTransaction": %s,"branchTransaction"
 
 json_string=$(printf "$template" $trunk $branch $MWM  $timestamp $trytes)
 
-echo "$json_string" | sudo picocom --baud 115200 --echo --imap crcrlf --exit-after 6000 /dev/ttyS0  > $saved_transaction_directory/attached_trytes.txt
+node ../node-scripts/serial.js "$json_string" > $saved_transaction_directory/attached_trytes.txt
+#echo "$json_string" | sudo picocom --baud 115200 --echo --imap crcrlf --exit-after 6000 /dev/ttyS0  > $saved_transaction_directory/attached_trytes.txt
 
 attached_trytes=$(node /home/pi/cryptocore-scripts/node-scripts/send-bundle.js $MWM)
 
