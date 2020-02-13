@@ -15,11 +15,13 @@ fi
 
 echo "Creating bundle"
 
-trytes=$(node /home/pi/cryptocore-scripts/node-scripts/create-bundle.js $MWM)
+# Execute the create-bundle.js script to create a bundle of 8 transactions
+trytes=$(node ../node-scripts/create-bundle.js $MWM)
 
 echo "Getting tip transactions"
 
-trunk_and_branch=$(node /home/pi/cryptocore-scripts/node-scripts/get-branch-and-trunk.js $MWM)
+# Execute the get-branch-and-trunk.js script to get two tip transactions
+trunk_and_branch=$(node ../node-scripts/get-branch-and-trunk.js $MWM)
 
 trunk=$(echo "$trunk_and_branch" | jq '.trunkTransaction')
 branch=$(echo "$trunk_and_branch" | jq '.branchTransaction')
@@ -27,7 +29,8 @@ branch=$(echo "$trunk_and_branch" | jq '.branchTransaction')
 # Get the current Unix epoch in milliseconds for the `attachmentTimestamp` field
 timestamp=$(date +%s%3N)
 
-saved_transaction_directory="/home/pi/cryptocore-scripts/attached-transaction-trytes"
+# Make sure a directory exists in which to save the transaction trytes
+saved_transaction_directory="../attached-transaction-trytes"
 
 if [ ! -d $saved_transaction_directory ]; then
     mkdir $saved_transaction_directory
@@ -35,13 +38,16 @@ fi
 
 echo "Doing proof of work on CryptoCore"
 
+# Create an API request, using the user's answers
 template='{"command":"attachToTangle","trunkTransaction": %s,"branchTransaction":%s,"minWeightMagnitude":%s,"timestamp":%s,"trytes":%s}'
 
 json_string=$(printf "$template" $trunk $branch $MWM  $timestamp $trytes)
 
+# Open a serial terminal and enter the API request to do proof of work on the bundle
 node ../node-scripts/serial.js "$json_string" > $saved_transaction_directory/attached_trytes.txt
-#echo "$json_string" | sudo picocom --baud 115200 --echo --imap crcrlf --exit-after 6000 /dev/ttyS0  > $saved_transaction_directory/attached_trytes.txt
 
-attached_trytes=$(node /home/pi/cryptocore-scripts/node-scripts/send-bundle.js $MWM)
+# Execute the send-bundle.js script to attach the transaction trytes to the Tangle
+attached_trytes=$(node ../node-scripts/send-bundle.js $MWM)
 
+# Print the result of the send-bundle.js script
 echo "$attached_trytes"

@@ -35,10 +35,11 @@ while [[ ! $branch =~ ^[A-Z9]*{81}$ ]]; do
         read -p "Please enter a branch transaction hash: " branch
 done
 
-# Get the current Unix epoch in milliseconds for the `attachmentTimestamp` field
-timestamp=$(date +%s%3N)
+# Get the current Unix epoch in seconds
+timestamp=$(date +%s)
 
-saved_transaction_directory="/home/pi/cryptocore-scripts/attached-transaction-trytes"
+# Make sure a directory exists in which to save the transaction trytes
+saved_transaction_directory="../attached-transaction-trytes"
 
 if [ ! -d $saved_transaction_directory ]; then
     mkdir $saved_transaction_directory
@@ -46,15 +47,18 @@ fi
 
 echo "Creating transaction and doing proof of work"
 
+# Create an API request, using the user's answers
 template='{"command":"jsonDataTX","trunkTransaction":"%s","branchTransaction":"%s","minWeightMagnitude":%s,"tag":"CRYPTOCORE99999999999999999", "address":"%s","timestamp":%s,"data":{"message":"HELLO WORLD FROM CRYPTOCORE"}}'
 
 json_string=$(printf "$template" "$trunk" "$branch" $MWM "$address" $timestamp)
 
+# Open the serial terminal and enter the API request to create a zero-value transaction
 node ../node-scripts/serial.js "$json_string" > $saved_transaction_directory/zero_value_transaction.txt
-#echo "$json_string" | sudo picocom --baud 115200 --echo --imap crcrlf --exit-after 3000 /dev/ttyS0 > $saved_transaction_directory/zero_value_transaction.txt
 
 echo "Attaching the transaction to the Tangle"
 
-attached_trytes=$(node /home/pi/cryptocore-scripts/node-scripts/send-tx.js $MWM)
+# Execute the send-tx.js script to attach the transaction to the Tangle
+attached_trytes=$(node ../node-scripts/send-tx.js $MWM)
 
+# Print the result of the send-tx.js script
 echo "$attached_trytes"
