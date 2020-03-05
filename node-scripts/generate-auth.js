@@ -9,8 +9,12 @@ const apiKey = new Uint8Array([0xb2, 0x33, 0x12, 0x56, 0x41, 0xf0, 0xcc, 0x60, 0
         0x40, 0x8e, 0x64, 0xf4, 0xd4]);
 
 // Get the first argument that was passed to this script
+// This should be a slot number between 0 and 7
+const slot = process.argv[2];
+
+// Get the first argument that was passed to this script
 // This should be an unsigned bundle hash
-const bundleHash = process.argv[2];
+const bundleHash = process.argv[3];
  
 // little endian
 function toBytesInt32 (num) {
@@ -27,15 +31,14 @@ function byteArrayToWordArray(ba) {
         return CryptoJS.lib.WordArray.create(wa, ba.length);
 }
  
-let key = 0
-let addressIndex = 0
+let addressIndex = 200
  
 let bundleHashChars = new Buffer.from(bundleHash, "ascii");
 let bundleHashBytes = Uint8Array.from(bundleHashChars)
  
 var buffer = [];
  
-buffer.push(toBytesInt32(keySlot))
+buffer.push(toBytesInt32(slot))
 buffer.push(toBytesInt32(addressIndex))
 buffer.push(bundleHashBytes)
 buffer.push(apiKey)

@@ -10,15 +10,16 @@ const network = process.argv[2];
 
 // Get the second argument that was passed to this script
 // This should be an 81 tryte address from which to withdraw IOTA tokens
-const inputAddress = Converter.trytesToTrits(process.argv[3]);
+const inputAddress = process.argv[3];
+const inputAddressTrits = Converter.trytesToTrits(inputAddress);
 
 // Get the third argument that was passed to this script
 // This should be an 81 tryte address in which to deposit the IOTA tokens from the input address
-const outputAddress = Converter.trytesToTrits(process.argv[4]);
+const outputAddressTrits = Converter.trytesToTrits(process.argv[4]);
 
 // Define a node for each IOTA network
 const nodes = {
-        devnet: 'https://nodes.devnet.iota.org:443',
+        devnet: 'https://nodes.devnet.thetangle.org:443',
         mainnet: `https://nodes.iota.org:443`
 }
 
@@ -36,22 +37,27 @@ if (network === 14) {
 
 let value = 0;
 
-Iota.getBalances([inputAddress], 100)
+iota.getBalances([inputAddress], 100)
   .then(({ balances }) => {
-    value = balances[0];
+    
+    if (balances[0] === 0) {
+	console.log("The CryptoCore address has no IOTA tokens");
+	console.log("Send IOTA tokens to the address to continue");
+	return;
+    } else {
+	const parameters = {
+   	outputAddress: outputAddressTrits,
+  	inputAddress: inputAddressTrits,
+   	securityLevel: 2,
+   	value: balances[0]
+	}
+
+	createUnsignedBundle(parameters);
+    }
   })
   .catch(error => {
     console.log(error);
 });
-
-const parameters = {
-   outputAddress: outputAddress,
-   inputAddress: inputAddress,
-   securityLevel: 2,
-   value: value 
-}
-
-createUnsignedBundle(parameters);
 
 async function createUnsignedBundle({ outputAddress, inputAddress, securityLevel, value }) {
 let bundle = new Int8Array();
