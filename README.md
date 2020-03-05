@@ -6,7 +6,7 @@ Use this repository to try sample code and learn how to use CryptoCore with the 
 
 ## Getting started
 
-To do proof of work for eight transactions and send them to a node, do the following:
+To create eight zero-value transactions, do proof of work for them, and send them to a node, do the following:
 
 1. Clone this repository
 
@@ -23,7 +23,6 @@ To do proof of work for eight transactions and send them to a node, do the follo
 3. Execute the `do_pow.sh` script
 
   ```bash
-  sudo chmod 777 do_pow.sh
   sudo ./do-pow.sh
   ```
 
