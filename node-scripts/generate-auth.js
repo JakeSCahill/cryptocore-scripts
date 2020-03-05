@@ -31,7 +31,7 @@ function byteArrayToWordArray(ba) {
         return CryptoJS.lib.WordArray.create(wa, ba.length);
 }
  
-let addressIndex = 200
+let addressIndex = 0
  
 let bundleHashChars = new Buffer.from(bundleHash, "ascii");
 let bundleHashBytes = Uint8Array.from(bundleHashChars)
