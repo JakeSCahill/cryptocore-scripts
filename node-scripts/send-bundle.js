@@ -8,7 +8,6 @@ const fs  = require('fs');
 // This should be a minimum weight magnitude (14 or 9)
 const network = process.argv[2];
 
-console.log(network);
 // Define a node for each IOTA network
 const nodes = {
         devnet: 'https://nodes.devnet.iota.org:443',
