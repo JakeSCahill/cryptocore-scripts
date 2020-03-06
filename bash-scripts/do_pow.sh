@@ -44,7 +44,7 @@ template='{"command":"attachToTangle","trunkTransaction": %s,"branchTransaction"
 json_string=$(printf "$template" $trunk $branch $MWM  $timestamp $trytes)
 
 # Open a serial terminal and enter the API request to do proof of work on the bundle
-node ../node-scripts/serial.js "$json_string" > $saved_transaction_directory/attached_trytes.txt
+node ../node-scripts/serial.js "$json_string" | jq ".trytes[]" | tr -d '"' | tr -d '\n' > $saved_transaction_directory/attached_trytes.txt
 
 # Execute the send-bundle.js script to attach the transaction trytes to the Tangle
 attached_trytes=$(node ../node-scripts/send-bundle.js $MWM)
