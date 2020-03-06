@@ -17,6 +17,10 @@ const inputAddressTrits = Converter.trytesToTrits(inputAddress);
 // This should be an 81 tryte address in which to deposit the IOTA tokens from the input address
 const outputAddressTrits = Converter.trytesToTrits(process.argv[4]);
 
+// Get the fourth argument that was passed to this script
+// This should be a security level between 1 and 3
+const securityLevel = parseInt(process.argv[5]);
+
 // Define a node for each IOTA network
 const nodes = {
         devnet: 'https://nodes.devnet.thetangle.org:443',
@@ -48,7 +52,7 @@ iota.getBalances([inputAddress], 100)
 	const parameters = {
    	outputAddress: outputAddressTrits,
   	inputAddress: inputAddressTrits,
-   	securityLevel: 2,
+   	securityLevel: securityLevel,
    	value: balances[0]
 	}
 

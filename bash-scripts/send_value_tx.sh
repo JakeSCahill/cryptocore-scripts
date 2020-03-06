@@ -17,15 +17,18 @@ while [[ ! $slot =~ ^[0-7]{1}$ ]]; do
         read -p "Please enter a valid slot number between 0 and 7" slot
 done
 
-# demo always uses keyIndex 0
+# This demo always uses keyIndex 0
 keyIndex=0
 
+# This demo always uses security level 2
+securityLevel=2
+
 # Create a generateAddress API request, using the user's answer
-template='{"command":"getAddress", "slot": %s, "keyIndex":%d, "number": 1, "security": 2}'
+template='{"command":"getAddress", "slot": %d, "keyIndex":%d, "number": 1, "security": %d}'
 
-json_string=$(printf "$template" "$slot" "$keyIndex")
+json_string=$(printf "$template" "$slot" "$keyIndex" "$securityLevel")
 
-echo "Generating an address with index 0 and security level 2"
+echo "Generating an address with index $keyIndex and security level $securityLevel"
 
 # Open the serial terminal and enter the API request to generate the address 
 input=$(node ../node-scripts/serial.js "$json_string" | jq ".trytes[]" | tr -d '"')
@@ -40,7 +43,7 @@ while [[ ! $output =~ ^[A-Z9]*{81}$ ]]; do
 done
 
 # Execute the create-unsigned-bundle.js script to create an unsigned bundle from the user's input
-unsigned_bundle_hash=$(node ../node-scripts/create-unsigned-bundle.js $MWM $input $output)
+unsigned_bundle_hash=$(node ../node-scripts/create-unsigned-bundle.js $MWM $input $output $securityLevel)
 
 if [[ ! $unsigned_bundle_hash =~ [A-Z9]{81} ]]; then
 	echo "$unsigned_bundle_hash"
@@ -53,9 +56,9 @@ echo "$unsigned_bundle_hash"
 auth=$(node ../node-scripts/generate-auth.js $slot $keyIndex $unsigned_bundle_hash)
 
 # Create an API request, using the user's answers
-sign_bundle_template='{"command":"signBundleHash", "slot": %s, "keyIndex":0,"bundleHash":"%s","security":2, "auth":"%s"}'
+sign_bundle_template='{"command":"signBundleHash", "slot": %d, "keyIndex":%d,"bundleHash":"%s","security":%d, "auth":"%s"}'
 
-sign_bundle_json_string=$(printf "$sign_bundle_template" "$slot" "$unsigned_bundle_hash" "$auth")
+sign_bundle_json_string=$(printf "$sign_bundle_template" "$slot" "$keyIndex" "$unsigned_bundle_hash" "$securityLevel" "$auth")
 
 echo "$sign_bundle_json_string"
 
