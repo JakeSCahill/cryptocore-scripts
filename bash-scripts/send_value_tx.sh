@@ -50,8 +50,6 @@ if [[ ! $unsigned_bundle_hash =~ [A-Z9]{81} ]]; then
 	exit 0
 fi
 
-echo "$unsigned_bundle_hash"
-
 # Execute the generate-auth.js script to generate a valid auth parameter for the signTransaction endpoint
 auth=$(node ../node-scripts/generate-auth.js $slot $keyIndex $unsigned_bundle_hash)
 
