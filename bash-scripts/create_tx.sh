@@ -53,7 +53,7 @@ template='{"command":"jsonDataTX","trunkTransaction":"%s","branchTransaction":"%
 json_string=$(printf "$template" "$trunk" "$branch" $MWM "$address" $timestamp)
 
 # Open the serial terminal and enter the API request to create a zero-value transaction
-node ../node-scripts/serial.js "$json_string" > $saved_transaction_directory/zero_value_transaction.txt
+node ../node-scripts/serial.js "$json_string" | jq ".trytes[]" | tr -d '"' | tr -d '\n' > $saved_transaction_directory/zero_value_transaction.txt
 
 echo "Attaching the transaction to the Tangle"
 
