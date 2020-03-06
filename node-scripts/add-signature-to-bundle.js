@@ -14,8 +14,6 @@ const network = parseInt(process.argv[2]);
 // This should be a signature
 const signature = process.argv[3];
 
-console.log(signature);
-
 // Define a node for each IOTA network
 const nodes = {
         devnet: 'https://nodes.devnet.iota.org:443',
