@@ -6,6 +6,9 @@
   "dependencies": {
     "@iota/core": "^1.0.0-beta.29",
     "@iota/transaction-converter": "^1.0.0-beta.23",
+    "@iota/transaction": "^1.0.0-beta.23",
+    "@iota/bundle": "^1.0.0-beta.29",
+    "cryptojs": "^4.0.0",
     "prompt": "^1.0.0",
     "serialport": "^8.0.7"
   },
