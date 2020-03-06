@@ -92,9 +92,6 @@ var transfers = [{
 // therefore this bundle is not signed
 const seed = "999999999999999999999999999999999999999999999999999999999999999999999999999999999"
 
-// Path to which to save the bundle's transaction trytes
-const savedTransactionTrytes = "/home/pi/cryptocore-scripts/attached-transaction-trytes/bundleTrytes.txt";
-
 // Chain the transactions into a bundle
 iota.prepareTransfers(seed, transfers)
     .then(function(trytes){
