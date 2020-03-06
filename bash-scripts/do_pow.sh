@@ -30,7 +30,7 @@ branch=$(echo "$trunk_and_branch" | jq '.branchTransaction')
 timestamp=$(date +%s%3N)
 
 # Make sure a directory exists in which to save the transaction trytes
-saved_transaction_directory="../attached-transaction-trytes"
+saved_transaction_directory="/home/pi/cryptocore-scripts/attached-transaction-trytes"
 
 if [ ! -d $saved_transaction_directory ]; then
     mkdir $saved_transaction_directory
