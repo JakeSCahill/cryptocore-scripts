@@ -12,30 +12,28 @@ const apiKey = new Uint8Array([0xb2, 0x33, 0x12, 0x56, 0x41, 0xf0, 0xcc, 0x60, 0
 // This should be a slot number between 0 and 7
 const slot = process.argv[2];
 
+// Get the second argument that was passed to this script
 // This should be a keyIndex
-const addressIndex = process.argv[3];
+const keyIndex = process.argv[3];
 
-// Get the first argument that was passed to this script
+// Get the second argument that was passed to this script
 // This should be an unsigned bundle hash
 const bundleHash = process.argv[4];
 
- 
-// little endian
-function toBytesInt32 (num) {
-        return new Uint8Array([(num & 0x000000ff), (num & 0x0000ff00) >> 8, (num & 0x00ff0000) >> 16, (num & 0xff000000) >> 24]);
+// Converts an integer to bytes in the little endian format
+function toBytesInt32 (number) {
+        return new Uint8Array([(number & 0x000000ff), (number & 0x0000ff00) >> 8, (number & 0x00ff0000) >> 16, (number & 0xff000000) >> 24]);
 }
- 
-function byteArrayToWordArray(ba) {
-        var wa = [],
-                i;
-        for (i = 0; i < ba.length; i++) {
-                wa[(i / 4) | 0] |= ba[i] << (24 - 8 * i);
-        }
- 
-        return CryptoJS.lib.WordArray.create(wa, ba.length);
+
+// Converts bytes to a CryptoJS Word Array
+function byteArrayToWordArray(byteArray) {
+ var wordArray = [];
+  for (i = 0; i < byteArray.length; i++) {
+   wordArray[(i / 4) | 0] |= byteArray[i] << (24 - 8 * i);
+  }
+
+ return CryptoJS.lib.WordArray.create(wordArray, byteArray.length);
 }
- 
-//let addressIndex = 0
  
 let bundleHashChars = new Buffer.from(bundleHash, "ascii");
 let bundleHashBytes = Uint8Array.from(bundleHashChars)
@@ -43,7 +41,7 @@ let bundleHashBytes = Uint8Array.from(bundleHashChars)
 var buffer = [];
  
 buffer.push(toBytesInt32(slot))
-buffer.push(toBytesInt32(addressIndex))
+buffer.push(toBytesInt32(keyIndex))
 buffer.push(bundleHashBytes)
 buffer.push(apiKey)
  
@@ -57,7 +55,3 @@ for (let b of buffer) {
 }
 hash = k.finalize()
 console.log(hash.toString(CryptoJS.enc.Hex))
-
-//const trit_state = wordsToTrits(hash.words)
-//trytes = converter.trytes(trit_state)
-//console.log(trytes)
