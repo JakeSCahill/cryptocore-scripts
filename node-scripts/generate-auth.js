@@ -12,9 +12,13 @@ const apiKey = new Uint8Array([0xb2, 0x33, 0x12, 0x56, 0x41, 0xf0, 0xcc, 0x60, 0
 // This should be a slot number between 0 and 7
 const slot = process.argv[2];
 
+// This should be a keyIndex
+const addressIndex = process.argv[3];
+
 // Get the first argument that was passed to this script
 // This should be an unsigned bundle hash
-const bundleHash = process.argv[3];
+const bundleHash = process.argv[4];
+
  
 // little endian
 function toBytesInt32 (num) {
@@ -31,7 +35,7 @@ function byteArrayToWordArray(ba) {
         return CryptoJS.lib.WordArray.create(wa, ba.length);
 }
  
-let addressIndex = 0
+//let addressIndex = 0
  
 let bundleHashChars = new Buffer.from(bundleHash, "ascii");
 let bundleHashBytes = Uint8Array.from(bundleHashChars)
@@ -52,6 +56,8 @@ for (let b of buffer) {
         k.update(byteArrayToWordArray(b))
 }
 hash = k.finalize()
-const trit_state = wordsToTrits(hash.words)
-trytes = converter.trytes(trit_state)
-console.log(trytes)
+console.log(hash.toString(CryptoJS.enc.Hex))
+
+//const trit_state = wordsToTrits(hash.words)
+//trytes = converter.trytes(trit_state)
+//console.log(trytes)

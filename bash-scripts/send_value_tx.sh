@@ -17,10 +17,13 @@ while [[ ! $slot =~ ^[0-7]{1}$ ]]; do
         read -p "Please enter a valid slot number between 0 and 7" slot
 done
 
-# Create a generateAddress API request, using the user's answer
-template='{"command":"getAddress", "slot": %s, "keyIndex":0, "number": 1, "security": 2}'
+# demo always uses keyIndex 0
+keyIndex=0
 
-json_string=$(printf "$template" "$slot")
+# Create a generateAddress API request, using the user's answer
+template='{"command":"getAddress", "slot": %s, "keyIndex":%d, "number": 1, "security": 2}'
+
+json_string=$(printf "$template" "$slot" "$keyIndex")
 
 echo "Generating an address with index 0 and security level 2"
 
@@ -39,7 +42,7 @@ done
 # Execute the create-unsigned-bundle.js script to create an unsigned bundle from the user's input
 unsigned_bundle_hash=$(node ../node-scripts/create-unsigned-bundle.js $MWM $input $output)
 
-if [[ ! $unsigned_bundle_hash =~ [A-Z9]*{81} ]]; then
+if [[ ! $unsigned_bundle_hash =~ [A-Z9]{81} ]]; then
 	echo "$unsigned_bundle_hash"
 	exit 0
 fi
@@ -47,7 +50,7 @@ fi
 echo "$unsigned_bundle_hash"
 
 # Execute the generate-auth.js script to generate a valid auth parameter for the signTransaction endpoint
-auth=$(node ../node-scripts/generate-auth.js $slot $unsigned_bundle_hash)
+auth=$(node ../node-scripts/generate-auth.js $slot $keyIndex $unsigned_bundle_hash)
 
 # Create an API request, using the user's answers
 sign_bundle_template='{"command":"signBundleHash", "slot": %s, "keyIndex":0,"bundleHash":"%s","security":2, "auth":"%s"}'
