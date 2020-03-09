@@ -63,7 +63,7 @@ echo "$sign_bundle_json_string"
 echo "Signing transaction"
 
 # Open the serial terminal and enter the API request to create a zero-value transaction
-signature=$(node ../node-scripts/serial.js "$sign_bundle_json_string" | jq ".trytes[]" | tr -d '"' | rev | cut -c 2- | rev|tr -d '\n')
+signature=$(node ../node-scripts/serial.js "$sign_bundle_json_string" | jq ".trytes[]" | tr -d '"' | tr -d '\n')
 
 result=$(node ../node-scripts/add-signature-to-bundle.js $MWM $signature)
 
