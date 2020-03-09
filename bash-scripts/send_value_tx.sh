@@ -68,8 +68,6 @@ sign_bundle_template='{"command":"signBundleHash", "slot": %d, "keyIndex":%d,"bu
 
 sign_bundle_json_string=$(printf "$sign_bundle_template" "$slot" "$keyIndex" "$unsigned_bundle_hash" "$securityLevel" "$auth")
 
-echo "$sign_bundle_json_string"
-
 echo "Signing transaction"
 
 # Open the serial terminal and enter the API request to create a zero-value transaction
