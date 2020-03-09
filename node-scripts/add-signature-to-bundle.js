@@ -47,7 +47,7 @@ let bundle = new Int8Array(fs.readFileSync('../bash-scripts/bundle'));
 // Transaction 0 is the output transaction, so start adding the signature fragments, starting from the next transaction in the bundle
 bundle.set(Bundle.addSignatureOrMessage(bundle, signatureTrits, 1));
 
-const trytes = []
+let trytes = []
 for (let offset = 0; offset < bundle.length; offset += Transaction.TRANSACTION_LENGTH) {
     trytes.push(Converter.tritsToTrytes(bundle.subarray(offset, offset + Transaction.TRANSACTION_LENGTH)));
 }
