@@ -31,14 +31,14 @@ const savedTransactionTrytes = "/home/pi/cryptocore-scripts/attached-transaction
 
 
 // Check the file for transaction trytes
-const data = fs.readFileSync(`${savedTransactionTrytes}/attached_trytes.txt`);
-const match = data.toString().match(/[A-Z9,]*/g);
-const trytes = [match[0]];
+let trytes = fs.readFileSync(`${savedTransactionTrytes}/attached_trytes.txt`).toString();
 
 if (!trytes) {
         console.log("No trytes found. Make sure that proof of work was done and check the following file :");
         console.log(`${savedTransactionTrytes}/attached_trytes.txt`);
 }
+
+trytes = JSON.parse(trytes);
 
 // Send the transaction trytes to the connected IOTA node
 iota.storeAndBroadcast(trytes)
