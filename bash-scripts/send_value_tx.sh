@@ -25,8 +25,9 @@ indexFile="../slot-$slot-security-level-$securityLevel-unspent-address-index.js"
 
 # If the file does not exist, create it and set the index to 0
 if [ ! -f $indexFile ]; then
-    echo "Creating file to keep track of spent addresses"
-    echo -e "{\"index\":0}" >  $indexFile
+    echo "Creating file to keep track of spent addresses by their key index"
+    keyIndex=0
+    echo -e "{\"index\":$keyIndex}" >  $indexFile
 else
 	# Read an existing index from the file
     keyIndex=$(tail -n 1 $indexFile | jq .index)
