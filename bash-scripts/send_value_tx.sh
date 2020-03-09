@@ -60,7 +60,7 @@ if [[ ! $unsigned_bundle_hash =~ [A-Z9]{81} ]]; then
 	exit 0
 fi
 
-# Execute the generate-auth.js script to generate a valid auth parameter for the signTransaction endpoint
+# Execute the generate-auth.js script to generate a valid auth parameter for the signBundleHash endpoint
 auth=$(node ../node-scripts/generate-auth.js $slot $keyIndex $unsigned_bundle_hash)
 
 # Create an API request, using the user's answers
@@ -70,7 +70,7 @@ sign_bundle_json_string=$(printf "$sign_bundle_template" "$slot" "$keyIndex" "$u
 
 echo "Signing transaction"
 
-# Open the serial terminal and enter the API request to create a zero-value transaction
+# Open the serial terminal and enter the API request to sign the bundle hash
 signature=$(node ../node-scripts/serial.js "$sign_bundle_json_string" | jq ".trytes[]" | tr -d '"' | tr -d '\n')
 
 result=$(node ../node-scripts/add-signature-to-bundle.js $MWM $signature $indexFile)
