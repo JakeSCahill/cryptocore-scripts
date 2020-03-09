@@ -21,7 +21,7 @@ done
 securityLevel=2
 
 # Define a file to keep track of spent addresses
-indexFile="../slot-$slot-security-level-$securityLevel-unspent-address-index.js"
+indexFile="../slot-$slot-security-level-$securityLevel-unspent-address-index.json"
 
 # If the file does not exist, create it and set the index to 0
 if [ ! -f $indexFile ]; then
