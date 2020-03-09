@@ -52,8 +52,15 @@ for (let offset = 0; offset < bundle.length; offset += Transaction.TRANSACTION_L
     trytes.push(Converter.tritsToTrytes(bundle.subarray(offset, offset + Transaction.TRANSACTION_LENGTH)));
 }
 
+// Reverse the trytes so that the transactions are ordered head first
+trytes = trytes.reverse();
+
+const savedTransactionTrytes = "/home/pi/cryptocore-scripts/attached-transaction-trytes";
+
+fs.writeFileSync(`${savedTransactionTrytes}/attached_bundle_trytes.txt`, trytes);
+
 // We need the bundle to be in order head to tail before sending it to the node
-iota.sendTrytes(trytes.reverse(), depth, network)
+iota.sendTrytes(trytes, depth, network)
     .then(bundle => {
     // Increment the index to avoid withdrawing from the same address again
     let index = indexFile.index;
