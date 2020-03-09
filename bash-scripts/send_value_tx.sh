@@ -17,11 +17,20 @@ while [[ ! $slot =~ ^[0-7]{1}$ ]]; do
         read -p "Please enter a valid slot number between 0 and 7" slot
 done
 
-# This demo always uses keyIndex 0
-keyIndex=0
-
 # This demo always uses security level 2
 securityLevel=2
+
+# Define a file to keep track of spent addresses
+indexFile="../slot-$slot-security-level-$securityLevel-unspent-address-index.js"
+
+# If the file does not exist, create it and set the index to 0
+if [ ! -f $indexFile ]; then
+    echo "Creating file to keep track of spent addresses"
+    echo -e "{\"index\":0}" >  $indexFile
+else
+	# Read an existing index from the file
+    keyIndex=$(tail -n 1 $indexFile | jq .index)
+fi
 
 # Create a generateAddress API request, using the user's answer
 template='{"command":"getAddress", "slot": %d, "keyIndex":%d, "number": 1, "security": %d}'
@@ -65,6 +74,6 @@ echo "Signing transaction"
 # Open the serial terminal and enter the API request to create a zero-value transaction
 signature=$(node ../node-scripts/serial.js "$sign_bundle_json_string" | jq ".trytes[]" | tr -d '"' | tr -d '\n')
 
-result=$(node ../node-scripts/add-signature-to-bundle.js $MWM $signature)
+result=$(node ../node-scripts/add-signature-to-bundle.js $MWM $signature $indexFile)
 
 echo "$result"
