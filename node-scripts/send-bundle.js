@@ -8,6 +8,10 @@ const fs  = require('fs');
 // This should be a minimum weight magnitude (14 or 9)
 const network = process.argv[2];
 
+// Get the second argument that was passed to the script
+// This should be the path to which you can save the attached transaction trytes
+const savedTransactionDirectory = process.argv[3];
+
 // Define a node for each IOTA network
 const nodes = {
         devnet: 'https://nodes.devnet.iota.org:443',
@@ -25,10 +29,6 @@ if (network === '14') {
         provider: nodes.devnet
         });
 }
-
-// Path to the file where the main script saved the transaction trytes
-const savedTransactionTrytes = "/home/pi/cryptocore-scripts/my_transactions";
-
 
 // Check the file for transaction trytes
 let trytes = fs.readFileSync(`${savedTransactionTrytes}/attached_trytes.txt`).toString();
