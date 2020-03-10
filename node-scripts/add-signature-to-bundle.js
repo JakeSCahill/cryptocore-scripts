@@ -60,7 +60,7 @@ for (let offset = 0; offset < bundle.length; offset += Transaction.TRANSACTION_L
 // Reverse the trytes so that the transactions are ordered head first
 trytes = trytes.reverse();
 
-fs.writeFile(`${savedTransactionDirectory}/attached_value_trytes.txt`, trytes, function(e,r)  {
+fs.writeFile(`${savedTransactionDirectory}/attached_value_trytes.txt`, trytes, function(error, result)  {
     if (error){
         console.log(error);
     } else {
