@@ -39,7 +39,7 @@ done
 timestamp=$(date +%s)
 
 # Make sure a directory exists in which you can save unfinished or pending transactions
-saved_transaction_directory="../attached-transaction-trytes"
+saved_transaction_directory="/home/pi/cryptocore-scripts/my-transactions"
 
 if [ ! -d $saved_transaction_directory ]; then
     mkdir $saved_transaction_directory
@@ -58,7 +58,7 @@ node ../node-scripts/serial.js "$json_string" | jq ".trytes[]" | tr -d '"' | tr 
 echo "Attaching the transaction to the Tangle"
 
 # Execute the send-tx.js script to attach the transaction to the Tangle
-attached_trytes=$(node ../node-scripts/send-tx.js $MWM)
+attached_trytes=$(node ../node-scripts/send-tx.js $MWM $saved_transaction_directory)
 
 # Print the result of the send-tx.js script
 echo "$attached_trytes"
