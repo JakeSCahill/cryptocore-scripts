@@ -33,7 +33,7 @@ else
     keyIndex=$(tail -n 1 $indexFile | jq .index)
 fi
 
-# Make sure a directory exists in which to save the transaction trytes
+# Make sure a directory exists in which you can save unfinished or pending transactions
 saved_transaction_directory="/home/pi/cryptocore-scripts/my_transactions"
 
 if [ ! -d $saved_transaction_directory ]; then
