@@ -38,7 +38,7 @@ done
 # Get the current Unix epoch in seconds
 timestamp=$(date +%s)
 
-# Make sure a directory exists in which to save the transaction trytes
+# Make sure a directory exists in which you can save unfinished or pending transactions
 saved_transaction_directory="../attached-transaction-trytes"
 
 if [ ! -d $saved_transaction_directory ]; then
@@ -53,7 +53,7 @@ template='{"command":"jsonDataTX","trunkTransaction":"%s","branchTransaction":"%
 json_string=$(printf "$template" "$trunk" "$branch" $MWM "$address" $timestamp)
 
 # Open the serial terminal and enter the API request to create a zero-value transaction
-node ../node-scripts/serial.js "$json_string" | jq ".trytes[]" | tr -d '"' | tr -d '\n' > $saved_transaction_directory/zero_value_transaction.txt
+node ../node-scripts/serial.js "$json_string" | jq ".trytes[]" | tr -d '"' | tr -d '\n' > $saved_transaction_directory/zero_value_transaction_trytes.txt
 
 echo "Attaching the transaction to the Tangle"
 
