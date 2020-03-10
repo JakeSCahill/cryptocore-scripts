@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# the safe version that also can follow symbolic links
+dir="$( dirname $( readlink -f $0 ) )"
+
 read -p "Are you sending this transaction to the Devnet or the Mainnet? " MWM
 
 if [[ $MWM =~ ^[mM] ]]
@@ -20,26 +23,33 @@ then
         address="999999999999999999999999999999999999999999999999999999999999999999999999999999999"
 fi
 
-read -p "Please enter a trunk transaction hash: " trunk
+#read -p "Please enter a trunk transaction hash: " trunk
+#
+#while [[ ! $trunk =~ ^[A-Z9]*{81}$ ]]; do
+#        echo "Hash invalid. Transaction hashes much contain 81 trytes."
+#	read -p "Please enter a trunk transaction hash: " trunk
+#done
+#
+#
+#read -p "Please enter a branch transaction hash: " branch
+#
+#while [[ ! $branch =~ ^[A-Z9]*{81}$ ]]; do
+#        echo "Hash invalid. Transaction hashes much contain 81 trytes."
+#        read -p "Please enter a branch transaction hash: " branch
+#done
 
-while [[ ! $trunk =~ ^[A-Z9]*{81}$ ]]; do
-        echo "Hash invalid. Transaction hashes much contain 81 trytes."
-	read -p "Please enter a trunk transaction hash: " trunk
-done
 
+tips="$( node ../node-scripts/get-branch-and-trunk.js )"
+trunk="$( jq '.trunkTransaction' <<< "$tips" | tr -d '"\n' )"
+branch="$( jq '.branchTransaction' <<< "$tips" | tr -d '"\n' )"
 
-read -p "Please enter a branch transaction hash: " branch
-
-while [[ ! $branch =~ ^[A-Z9]*{81}$ ]]; do
-        echo "Hash invalid. Transaction hashes much contain 81 trytes."
-        read -p "Please enter a branch transaction hash: " branch
-done
+echo "got trunk:$trunk branch:$branch"
 
 # Get the current Unix epoch in seconds
 timestamp=$(date +%s)
 
 # Make sure a directory exists in which you can save unfinished or pending transactions
-saved_transaction_directory="/home/pi/cryptocore-scripts/my-transactions"
+saved_transaction_directory="$dir/../my-transactions"
 
 if [ ! -d $saved_transaction_directory ]; then
     mkdir $saved_transaction_directory
@@ -48,12 +58,12 @@ fi
 echo "Creating transaction and doing proof of work"
 
 # Create an API request, using the user's answers
-template='{"command":"jsonDataTX","trunkTransaction":"%s","branchTransaction":"%s","minWeightMagnitude":%s,"tag":"CRYPTOCORE99999999999999999", "address":"%s","timestamp":%s,"data":{"message":"HELLO WORLD FROM CRYPTOCORE"}}'
+template='{"command":"jsonDataTX","trunkTransaction":"%s","branchTransaction":"%s","minWeightMagnitude":%d,"tag":"CRYPTOCORE99999999999999999", "address":"%s","timestamp":%s,"data":{"message":"HELLO WORLD FROM CRYPTOCORE"}}'
 
 json_string=$(printf "$template" "$trunk" "$branch" $MWM "$address" $timestamp)
 
 # Open the serial terminal and enter the API request to create a zero-value transaction
-node ../node-scripts/serial.js "$json_string" | jq ".trytes[]" | tr -d '"' | tr -d '\n' > $saved_transaction_directory/zero_value_transaction_trytes.txt
+node ../node-scripts/serial.js "$json_string" | jq ".trytes[]" | tr -d '"\n' > $saved_transaction_directory/zero_value_transaction_trytes.txt
 
 echo "Attaching the transaction to the Tangle"
 
