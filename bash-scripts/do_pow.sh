@@ -29,7 +29,7 @@ branch=$(echo "$trunk_and_branch" | jq '.branchTransaction')
 # Get the current Unix epoch in milliseconds for the `attachmentTimestamp` field
 timestamp=$(date +%s%3N)
 
-# Make sure a directory exists in which to save the transaction trytes
+# Make sure a directory exists in which you can save unfinished or pending transactions
 saved_transaction_directory="/home/pi/cryptocore-scripts/my_transactions"
 
 if [ ! -d $saved_transaction_directory ]; then
