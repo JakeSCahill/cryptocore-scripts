@@ -22,7 +22,7 @@ const outputAddressTrits = Converter.trytesToTrits(process.argv[4]);
 const securityLevel = parseInt(process.argv[5]);
 
 // Get the fifth argument that was passed to the script
-// This should be the path to which you can save the attached transaction trytes
+// This should be the path to which you can save unfinished or pending transactions
 const savedTransactionDirectory = process.argv[6];
 
 // Define a node for each IOTA network
