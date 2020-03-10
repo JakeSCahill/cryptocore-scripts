@@ -21,6 +21,10 @@ const outputAddressTrits = Converter.trytesToTrits(process.argv[4]);
 // This should be a security level between 1 and 3
 const securityLevel = parseInt(process.argv[5]);
 
+// Get the fifth argument that was passed to the script
+// This should be the path to which you can save the attached transaction trytes
+const savedTransactionDirectory = process.argv[6];
+
 // Define a node for each IOTA network
 const nodes = {
         devnet: 'https://nodes.devnet.thetangle.org:443',
@@ -85,7 +89,7 @@ for (let i = 0; i < securityLevel; i++) {
 const result = await Bundle.finalizeBundle(bundle);
 
 // Save the bundle array to a binary file
-fs.writeFileSync('bundle', result, (error) => {
+fs.writeFileSync(`${savedTransactionDirectory}/bundle`, result, (error) => {
   if(!error) {
      console.log('Bundle details saved to file');
   } else{
