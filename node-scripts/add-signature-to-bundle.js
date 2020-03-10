@@ -15,10 +15,15 @@ const network = parseInt(process.argv[2]);
 const signature = process.argv[3];
 
 // Get the third argument that was passed to the script
-// This should be the path to the file that contains the latest unspent address$
+// This should be the path to the file that contains the index of the latest unspent address
 let indexFilePath = process.argv[4];
 
+// Load the file
 let indexFile = require(indexFilePath);
+
+// Get the fourth argument that was passed to the script
+// This should be the path to which you can save the attached transaction trytes
+const savedTransactionDirectory = process.argv[5];
 
 // Define a node for each IOTA network
 const nodes = {
@@ -55,9 +60,13 @@ for (let offset = 0; offset < bundle.length; offset += Transaction.TRANSACTION_L
 // Reverse the trytes so that the transactions are ordered head first
 trytes = trytes.reverse();
 
-const savedTransactionTrytes = "/home/pi/cryptocore-scripts/attached-transaction-trytes";
-
-fs.writeFileSync(`${savedTransactionTrytes}/attached_bundle_trytes.txt`, trytes);
+fs.writeFile(`${savedTransactionTrytes}/attached_value_trytes.txt`, trytes, function(e,r)  {
+    if (error){
+        console.log(error);
+    } else {
+        console.log("Bundle trytes saved");
+    }
+});
 
 // We need the bundle to be in order head to tail before sending it to the node
 iota.sendTrytes(trytes, depth, network)
