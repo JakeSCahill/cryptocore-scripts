@@ -60,7 +60,8 @@ for (let offset = 0; offset < bundle.length; offset += Transaction.TRANSACTION_L
 // Reverse the trytes so that the transactions are ordered head first
 trytes = trytes.reverse();
 
-fs.writeFile(`${savedTransactionDirectory}/attached_value_trytes.txt`, trytes, function(error, result)  {
+// Save the trytes to a file so that they can later be reattached if needed
+fs.writeFile(`${savedTransactionDirectory}/attached_value_trytes.txt`, JSON.stringify(trytes), function(error, result)  {
     if (error){
         console.log(error);
     } else {
@@ -68,7 +69,6 @@ fs.writeFile(`${savedTransactionDirectory}/attached_value_trytes.txt`, trytes, f
     }
 });
 
-// We need the bundle to be in order head to tail before sending it to the node
 iota.sendTrytes(trytes, depth, network)
     .then(bundle => {
     // Increment the index to avoid withdrawing from the same address again
