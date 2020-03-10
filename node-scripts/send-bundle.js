@@ -35,7 +35,7 @@ let trytes = fs.readFileSync(`${savedTransactionDirectory}/attached_trytes.txt`)
 
 if (!trytes) {
         console.log("No trytes found. Make sure that proof of work was done and check the following file :");
-        console.log(`${savedTransactionTrytes}/attached_trytes.txt`);
+        console.log(`${savedTransactionDirectory}/attached_trytes.txt`);
 }
 
 trytes = JSON.parse(trytes);
