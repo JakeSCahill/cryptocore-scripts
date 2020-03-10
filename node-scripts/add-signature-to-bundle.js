@@ -21,8 +21,8 @@ let indexFilePath = process.argv[4];
 // Load the file
 let indexFile = require(indexFilePath);
 
-// Get the fourth argument that was passed to the script
-// This should be the path to which you can save the attached transaction trytes
+// Get the fifth argument that was passed to the script
+// This should be the path to which you can save unfinished or pending transactions
 const savedTransactionDirectory = process.argv[5];
 
 // Define a node for each IOTA network
