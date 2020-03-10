@@ -60,7 +60,7 @@ while [[ ! $output =~ ^[A-Z9]*{81}$ ]]; do
 done
 
 # Execute the create-unsigned-bundle.js script to create an unsigned bundle from the user's input
-unsigned_bundle_hash=$(node ../node-scripts/create-unsigned-bundle.js $MWM $input $output $securityLevel)
+unsigned_bundle_hash=$(node ../node-scripts/create-unsigned-bundle.js $MWM $input $output $securityLevel $saved_transaction_directory)
 
 if [[ ! $unsigned_bundle_hash =~ [A-Z9]{81} ]]; then
 	echo "$unsigned_bundle_hash"
