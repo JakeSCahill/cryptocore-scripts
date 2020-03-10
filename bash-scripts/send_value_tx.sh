@@ -80,6 +80,6 @@ echo "Signing transaction"
 # Open the serial terminal and enter the API request to sign the bundle hash
 signature=$(node ../node-scripts/serial.js "$sign_bundle_json_string" | jq ".trytes[]" | tr -d '"' | tr -d '\n')
 
-result=$(node ../node-scripts/add-signature-to-bundle.js $MWM $signature $indexFile)
+result=$(node ../node-scripts/add-signature-to-bundle.js $MWM $signature $indexFile $saved_transaction_directory)
 
 echo "$result"
