@@ -47,7 +47,7 @@ json_string=$(printf "$template" $trunk $branch $MWM  $timestamp $trytes)
 node ../node-scripts/serial.js "$json_string" | jq ".trytes"  >  $saved_transaction_directory/attached_trytes.txt
 
 # Execute the send-bundle.js script to attach the transaction trytes to the Tangle
-attached_trytes=$(node ../node-scripts/send-bundle.js $MWM)
+attached_trytes=$(node ../node-scripts/send-bundle.js $MWM $saved_transaction_directory)
 
 # Print the result of the send-bundle.js script
 echo "$attached_trytes"
