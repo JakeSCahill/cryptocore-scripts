@@ -26,11 +26,12 @@ if (network === '14') {
         });
 }
 
-// Path to the file where the main script saved the transaction trytes
-const savedTransactionTrytes = "../attached-transaction-trytes";
+// Get the second argument that was passed to the script
+// This should be the path to which you can save unfinished or pending transactions
+const savedTransactionDirectory = process.argv[3];
 
 // Check the file for transaction trytes
-const data = fs.readFileSync(`${savedTransactionTrytes}/zero_value_transaction.txt`);
+const data = fs.readFileSync(`${savedTransactionDirectory}/zero_value_transaction_trytes.txt`);
 const match = data.toString().match(/[A-Z9,]*/g);
 const trytes = [match[0]];
 
