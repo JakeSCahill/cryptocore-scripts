@@ -27,7 +27,7 @@ if (network === '14') {
 }
 
 // Path to the file where the main script saved the transaction trytes
-const savedTransactionTrytes = "/home/pi/cryptocore-scripts/attached-transaction-trytes";
+const savedTransactionTrytes = "/home/pi/cryptocore-scripts/my_transactions";
 
 
 // Check the file for transaction trytes
