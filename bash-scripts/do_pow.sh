@@ -30,7 +30,7 @@ branch=$(echo "$trunk_and_branch" | jq '.branchTransaction')
 timestamp=$(date +%s%3N)
 
 # Make sure a directory exists in which you can save unfinished or pending transactions
-saved_transaction_directory="/home/pi/cryptocore-scripts/my_transactions"
+saved_transaction_directory="/home/pi/cryptocore-scripts/my-transactions"
 
 if [ ! -d $saved_transaction_directory ]; then
     mkdir $saved_transaction_directory
