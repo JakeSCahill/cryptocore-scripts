@@ -31,7 +31,7 @@ if (network === '14') {
 }
 
 // Check the file for transaction trytes
-let trytes = fs.readFileSync(`${savedTransactionTrytes}/attached_trytes.txt`).toString();
+let trytes = fs.readFileSync(`${savedTransactionDirectory}/attached_trytes.txt`).toString();
 
 if (!trytes) {
         console.log("No trytes found. Make sure that proof of work was done and check the following file :");
