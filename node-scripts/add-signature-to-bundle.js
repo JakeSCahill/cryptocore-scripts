@@ -47,7 +47,7 @@ if (network === 14) {
 
 const signatureTrits = Converter.trytesToTrits(signature)
 
-let bundle = new Int8Array(fs.readFileSync('../bash-scripts/bundle'));
+let bundle = new Int8Array(fs.readFileSync(`${savedTransactionDirectory}/bundle'));
 
 // Transaction 0 is the output transaction, so start adding the signature fragments, starting from the next transaction in the bundle
 bundle.set(Bundle.addSignatureOrMessage(bundle, signatureTrits, 1));
