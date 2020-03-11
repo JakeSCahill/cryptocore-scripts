@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# the safe version that also can follow symbolic links
+dir="$( dirname $( readlink -f $0 ) )"
+
 echo "Welcome to the spam bundle creator"
 
 read -p "Are you sending transactions to the Devnet or the Mainnet? " MWM
@@ -30,7 +33,7 @@ branch=$(echo "$trunk_and_branch" | jq '.branchTransaction')
 timestamp=$(date +%s%3N)
 
 # Make sure a directory exists in which you can save unfinished or pending transactions
-saved_transaction_directory="/home/pi/cryptocore-scripts/my-transactions"
+saved_transaction_directory="$dir/../my-transactions"
 
 if [ ! -d $saved_transaction_directory ]; then
     mkdir $saved_transaction_directory

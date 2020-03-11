@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# the safe version that also can follow symbolic links
+dir="$( dirname $( readlink -f $0 ) )"
+
 read -p "Are you sending this transaction to the Devnet or the Mainnet? " MWM
 
 if [[ $MWM =~ ^[mM] ]]
@@ -34,7 +37,7 @@ else
 fi
 
 # Make sure a directory exists in which you can save unfinished or pending transactions
-saved_transaction_directory="/home/pi/cryptocore-scripts/my-transactions"
+saved_transaction_directory="$dir/../my-transactions"
 
 if [ ! -d $saved_transaction_directory ]; then
     mkdir $saved_transaction_directory
