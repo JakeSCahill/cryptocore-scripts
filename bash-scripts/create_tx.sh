@@ -23,25 +23,10 @@ then
         address="999999999999999999999999999999999999999999999999999999999999999999999999999999999"
 fi
 
-#read -p "Please enter a trunk transaction hash: " trunk
-#
-#while [[ ! $trunk =~ ^[A-Z9]*{81}$ ]]; do
-#        echo "Hash invalid. Transaction hashes much contain 81 trytes."
-#	read -p "Please enter a trunk transaction hash: " trunk
-#done
-#
-#
-#read -p "Please enter a branch transaction hash: " branch
-#
-#while [[ ! $branch =~ ^[A-Z9]*{81}$ ]]; do
-#        echo "Hash invalid. Transaction hashes much contain 81 trytes."
-#        read -p "Please enter a branch transaction hash: " branch
-#done
-
-
-tips="$( node ../node-scripts/get-branch-and-trunk.js )"
-trunk="$( jq '.trunkTransaction' <<< "$tips" | tr -d '"\n' )"
-branch="$( jq '.branchTransaction' <<< "$tips" | tr -d '"\n' )"
+# Execute the get-branch-and-trunk.js script to get two tip transactions
+trunk_and_branch=$(node ../node-scripts/get-branch-and-trunk.js $MWM)
+trunk=$(echo "$trunk_and_branch" | jq '.trunkTransaction'| tr -d '"\n' )
+branch=$(echo "$trunk_and_branch" | jq '.branchTransaction'| tr -d '"\n' )
 
 echo "got trunk:$trunk branch:$branch"
 
